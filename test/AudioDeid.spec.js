@@ -2,18 +2,18 @@ const Assert = require('assert');
 
 const AudioDeid = require("../index");
 
-const audioDeid = new AudioDeid({ frequency: 500 });
+const audioDeid = new AudioDeid({
+    frequency: 500,
+    volume: 0.5
+});
 
 describe('AudioDeid Test', () => {
-    it('Generate Beep', generateBeep);
     it('Deid File', deidFile);
 });
 
-
 function deidFile() {
-    const loaded = AudioDeid.load("../../../samples/input.wav");
-
-    const deided = AudioDeid.deid(loaded, 4, 5);
-    
-    AudioDeid.save("../../../samples/output.wav", deided);
+    audioDeid.load("./sample/input.wav")
+        .deid(0.81, 1.262)
+        .deid(2.978, 3.212)
+        .save("./sample/output.wav");
 }
