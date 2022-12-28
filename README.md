@@ -15,13 +15,9 @@
 
 ### Sample
 
-Original
+[Original Audio](./sample/input.wav)
 
-<audio controls src='./sample/input.wav'>Input</audio>
-
-De-identified
-
-<audio controls src='./sample/output.wav'>Output</audio>
+[De-identified Audio](./sample/output.wav)
 
 ### Usage
 
