@@ -13,6 +13,16 @@
 
 ```
 
+### Sample
+
+Original
+
+<audio controls src='./sample/input.wav'>Input</audio>
+
+De-identified
+
+<audio controls src='./sample/output.wav'>Output</audio>
+
 ### Usage
 
 ```javascript
@@ -23,13 +33,10 @@ const audioDeid = new AudioDeid({
     volume: 0.5
 });
 
-audioDeid.load("./samples/input.wav")
-    .deid(3.9, 4.9)
-    .deid(14.1, 15.2)
-    .deid(16.2, 19.441)
-    .deid(22.501, 23.571)
-    .deid(1044.301, 1046)
-    .save("./samples/output.wav");
+audioDeid.load("./sample/input.wav")
+    .deid(0.81, 1.262)
+    .deid(2.978, 3.212)
+    .save("./sample/output.wav");
 ```
 
 ### Dependency
