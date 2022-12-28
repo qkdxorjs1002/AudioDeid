@@ -1,0 +1,17 @@
+{
+  "name": "audiodeid",
+  "version": "1.0.0",
+  "description": "De-identification audio",
+  "main": "index.js",
+  "author": "TaeGeon Bang",
+  "license": "GPL-3.0",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "node-wav": "^0.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  }
+}
