@@ -35,5 +35,7 @@ audioDeid.load("./samples/input.wav")
 ### Dependency
 
 ```json
-node-wav: ^0.0.2
+{
+    "node-wav": "^0.0.2"
+}
 ```
