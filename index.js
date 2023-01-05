@@ -79,6 +79,8 @@ class AudioDeid {
      * @returns {AudioDeid} this
      */
     load(path) {
+        this.clear();
+
         try {
             this.#audioFileBuffer = Fs.readFileSync(path);
 
@@ -91,9 +93,7 @@ class AudioDeid {
             this.#sampleRate = decoded.sampleRate;
             this.#channelData = decoded.channelData.slice();
         } catch (e) {
-            this.#audioFileBuffer = null;
-            this.#sampleRate = null;
-            this.#channelData = null;
+            this.clear();
 
             throw new Error("Failed to load audio data from file.", e);
         }
@@ -112,9 +112,7 @@ class AudioDeid {
         } catch (e) {
             throw new Error("Failed to save audio data into file.", e);
         } finally {
-            this.#audioFileBuffer = null;
-            this.#channelData = null;
-            this.#sampleRate = null;
+            this.clear();
         }
     }
 
@@ -143,19 +141,33 @@ class AudioDeid {
             throw new Error("Parameter 'start' must be less than Parameter 'end'.");
         }
 
-        const startSamplePosition = this.#sampleRate * start;
-        const endSamplePosition = this.#sampleRate * end;
-        const beep = this.generateBeep({
-            sampleRate: this.#sampleRate, 
-            size: endSamplePosition - startSamplePosition, 
-            tone: this.#FREQUENCY_OF_BEEP
-        });
+        try {
+            const startSamplePosition = this.#sampleRate * start;
+            const endSamplePosition = this.#sampleRate * end;
+            const beep = this.generateBeep({
+                sampleRate: this.#sampleRate, 
+                size: endSamplePosition - startSamplePosition, 
+                tone: this.#FREQUENCY_OF_BEEP
+            });
 
-        this.#channelData.forEach((value, index, array) => {
-            value.set(beep, startSamplePosition);
-        });
+            this.#channelData.forEach((value, index, array) => {
+                value.set(beep, startSamplePosition);
+            });
+        } catch (e) {
+            this.clear();
+            throw e;
+        }
 
         return this;
+    }
+
+    /**
+     * Clean properties of this instance
+     */
+    clear() {
+        this.#audioFileBuffer = null;
+        this.#sampleRate = null;
+        this.#channelData = null;
     }
 
     /**
