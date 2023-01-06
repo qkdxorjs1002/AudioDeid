@@ -1,34 +1,40 @@
 const NodeWav = require("node-wav");
+const Path = require('path')
 const Fs = require("fs");
 
 class AudioDeid {
 
     /**
      * Frequency of Beep wave
+     * @private
      * @type {number}
      */
     #FREQUENCY_OF_BEEP
 
     /**
      * Volume of Beep wave
+     * @private
      * @type {number}
      */
     #VOLUME_OF_BEEP
 
     /**
      * Loaded Buffer from audio file
+     * @private
      * @type {Buffer}
      */
     #audioFileBuffer;
 
     /**
      * SampleRate of Loaded Audio Data
+     * @private
      * @type {number}
      */
     #sampleRate;
 
     /**
      * Processed Channel Data
+     * @private
      * @type {Float32Array[]}
      */
     #channelData
@@ -108,8 +114,7 @@ class AudioDeid {
     save(path) {
         try {
             this.#audioFileBuffer = NodeWav.encode(this.#channelData, { sampleRate: this.#sampleRate });
-            Fs.mkdirSync(path, { recursive: true });
-            Fs.writeFileSync(path, this.#audioFileBuffer);
+            this.#writeFileSyncRecursive(path, this.#audioFileBuffer);
         } catch (e) {
             throw new Error("Failed to save audio data into file.", e);
         } finally {
@@ -189,6 +194,31 @@ class AudioDeid {
         });
 
         return beep;
+    }
+
+    /**
+     * Write File Recursively
+     * @private
+     * @param {string} filename 
+     * @param {*} content 
+     * @param {string|undefined} charset
+     */
+    #writeFileSyncRecursive(filename, content, charset) {
+        const folders = filename.split(Path.sep).slice(0, -1);
+
+        if (folders.length) {
+            folders.reduce((last, folder) => {
+                const folderPath = last ? last + Path.sep + folder : folder
+
+                if (!Fs.existsSync(folderPath)) {
+                    Fs.mkdirSync(folderPath);
+                }
+
+                return folderPath;
+            });
+        }
+
+        Fs.writeFileSync(filename, content, charset);
     }
 
 }
