@@ -108,6 +108,7 @@ class AudioDeid {
     save(path) {
         try {
             this.#audioFileBuffer = NodeWav.encode(this.#channelData, { sampleRate: this.#sampleRate });
+            Fs.mkdirSync(path, { recursive: true });
             Fs.writeFileSync(path, this.#audioFileBuffer);
         } catch (e) {
             throw new Error("Failed to save audio data into file.", e);
